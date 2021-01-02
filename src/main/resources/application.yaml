@@ -1,0 +1,31 @@
+
+spring:
+  application:
+    name: person-service
+  kafka:
+    bootstrap-servers:
+      - localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      group-id: ${spring.application.name}
+  cloud:
+    function:
+      definition: person
+    stream:
+      source: person
+      binders:
+        kafka:
+          type: kafka
+      bindings:
+        person-in-0:
+          destination: person-topic
+          content-type: application/json
+        person-out-0:
+          destination: person-topic
+          content-type: application/json
+      kafka:
+        input-estoque:
+          destination: person-topic
+          group: '${spring.application.name}'
+          consumer:
+            autoCommitOffset: true
